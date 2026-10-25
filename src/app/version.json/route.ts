@@ -1,8 +1,8 @@
+import { connection } from "next/server";
 import { APP_NAME, APP_VERSION, latestRelease } from "@/lib/releases";
 
-export const dynamic = "force-dynamic";
-
-export function GET() {
+export async function GET() {
+  await connection();
   const latest = latestRelease();
   return Response.json(
     {
