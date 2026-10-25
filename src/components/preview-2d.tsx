@@ -43,16 +43,16 @@ export function Preview2D({
         role="img"
         aria-label={`2D outline of ${piece.name}`}
       >
-        <path d={d(outline)} fill="#d8b48a" fillOpacity="0.35" stroke="#3b2416" strokeWidth="0.7" />
+        <path d={d(outline)} fill="#c08958" fillOpacity="0.55" stroke="#3b2416" strokeWidth="0.85" />
         {holes.map((hole, i) => (
-          <path key={`h-${i}`} d={d(hole)} fill="#f4efe6" stroke="#3b2416" strokeWidth="0.5" />
+          <path key={`h-${i}`} d={d(hole)} fill="#f4efe6" stroke="#3b2416" strokeWidth="0.55" />
         ))}
         <path
           d={d(plan.path)}
           fill="none"
-          stroke="#8b5a2b"
-          strokeWidth="0.45"
-          strokeDasharray={plan.marks.length ? "0" : "1.6 1.1"}
+          stroke="#6b3a22"
+          strokeWidth="0.55"
+          strokeDasharray={plan.marks.length ? undefined : "1.8 1.2"}
         />
         {plan.holePaths.map((hole, i) => (
           <path key={`s-${i}`} d={d(hole)} fill="none" stroke="#8b5a2b" strokeWidth="0.4" />

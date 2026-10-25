@@ -56,8 +56,8 @@ function Frame({ piece, scalePct }: { piece: Piece; scalePct: number }) {
   const { camera } = useThree();
   useEffect(() => {
     const box = ringBBox(piece.outline);
-    const span = Math.max(box.width, box.height) * (scalePct / 100);
-    camera.position.set(span * 0.7, span * 0.85, span * 0.7);
+    const span = Math.max(box.width, box.height, 40) * (scalePct / 100);
+    camera.position.set(span * 0.85, span * 0.7, span * 0.95);
     camera.lookAt(0, 0, 0);
   }, [camera, piece, scalePct]);
   return null;

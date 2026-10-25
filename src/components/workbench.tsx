@@ -282,13 +282,29 @@ export function Workbench() {
               value={`${trimNum(settings.scalePct, 0)}%`}
               hint="Changes only the cut outline"
             >
-              <Slider
-                min={SCALE_MIN_PCT}
-                max={SCALE_MAX_PCT}
-                step={1}
-                value={[settings.scalePct]}
-                onValueChange={([scalePct]) => setSettings((s) => ({ ...s, scalePct }))}
-              />
+              <div className="flex items-center gap-2">
+                <Slider
+                  min={SCALE_MIN_PCT}
+                  max={SCALE_MAX_PCT}
+                  step={1}
+                  value={[settings.scalePct]}
+                  onValueChange={([scalePct]) => setSettings((s) => ({ ...s, scalePct }))}
+                />
+                <Input
+                  type="number"
+                  min={SCALE_MIN_PCT}
+                  max={SCALE_MAX_PCT}
+                  step={1}
+                  className="w-20"
+                  value={trimNum(settings.scalePct, 0)}
+                  onChange={(e) =>
+                    setSettings((s) => ({
+                      ...s,
+                      scalePct: clamp(Number(e.target.value) || 0, SCALE_MIN_PCT, SCALE_MAX_PCT),
+                    }))
+                  }
+                />
+              </div>
             </Field>
             <Field
               label="Drawing width"
