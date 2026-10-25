@@ -65,6 +65,21 @@ describe("outline classification", () => {
   });
 });
 
+describe("stitch inset", () => {
+  it("places the stitch path inside the cut outline by the seam distance", async () => {
+    const { loadCardSleeveSample } = await import("@/lib/samples/card-sleeve");
+    const { DEFAULT_SETTINGS } = await import("@/lib/defaults");
+    const { planStitch } = await import("@/lib/geometry/stitch");
+    const { findPiece } = await import("@/lib/geometry/plate");
+    const { ringBBox } = await import("@/lib/geometry/vec");
+    const body = findPiece(loadCardSleeveSample().pieces, "Card Body")!;
+    const plan = planStitch(body, DEFAULT_SETTINGS, 100);
+    const stitch = ringBBox(plan.path);
+    expect(stitch.width).toBeCloseTo(93, 0.8);
+    expect(stitch.height).toBeCloseTo(65, 0.8);
+  });
+});
+
 describe("stitch marks", () => {
   it("spaces marks so the last gap matches and reports count and pitch", () => {
     const square = [

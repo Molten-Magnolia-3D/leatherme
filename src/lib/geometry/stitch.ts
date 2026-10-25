@@ -1,4 +1,4 @@
-import { offsetRing, strokeRibbon } from "@/lib/geometry/offset";
+import { largerRing, offsetRing, strokeRibbon } from "@/lib/geometry/offset";
 import type { Piece, Ring, StitchPlan, StitchSettings } from "@/lib/geometry/types";
 import {
   add,
@@ -23,9 +23,9 @@ export function scalePiece(piece: Piece, factor: number): Piece {
 
 export function planStitch(piece: Piece, settings: StitchSettings, scalePct: number): StitchPlan {
   const scaled = scalePiece(piece, scalePct / 100);
-  const inset = -Math.max(0.2, settings.seamMm);
-  const path = offsetRing(scaled.outline, inset);
-  const holePaths = scaled.holes.map((hole) => offsetRing(hole, Math.max(0.2, settings.seamMm)));
+  const seam = Math.max(0.2, settings.seamMm);
+  const path = offsetRing(scaled.outline, seam);
+  const holePaths = scaled.holes.map((hole) => offsetRing(hole, seam));
 
   if (settings.mode === "solid") {
     return {
@@ -106,10 +106,10 @@ function markSlot(ring: Ring, start: number, length: number, width: number): Rin
 }
 
 export function grooveRings(path: Ring, width: number): { outer: Ring; inner: Ring } | null {
-  const outer = offsetRing(path, width / 2);
-  const inner = offsetRing(path, -width / 2);
-  if (outer.length < 3 || inner.length < 3) return null;
-  return { outer, inner };
+  const a = offsetRing(path, width / 2);
+  const b = offsetRing(path, -width / 2);
+  if (a.length < 3 || b.length < 3) return null;
+  return largerRing(a, b);
 }
 
 export function ribbonOrNull(path: Ring, width: number): Ring | null {

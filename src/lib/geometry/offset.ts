@@ -4,16 +4,20 @@ import {
   cross,
   dist,
   dot,
-  ensureCcw,
   mul,
   normalize,
   openRing,
   perp,
+  polygonArea,
   sub,
 } from "@/lib/geometry/vec";
 
+/**
+ * Offset a closed ring. Positive distance moves to the left of travel.
+ * Outlines are CCW and holes are CW, so a positive seam moves into the leather.
+ */
 export function offsetRing(ring: Ring, distance: number): Ring {
-  const pts = ensureCcw(openRing(ring));
+  const pts = openRing(ring);
   if (pts.length < 3 || Math.abs(distance) < 1e-9) return pts.map((p) => ({ ...p }));
   const out: Point[] = [];
   for (let i = 0; i < pts.length; i++) {
@@ -24,21 +28,19 @@ export function offsetRing(ring: Ring, distance: number): Ring {
     const e2 = normalize(sub(next, curr));
     const n1 = perp(e1);
     const n2 = perp(e2);
-    // CCW left-normal points inward; negative distance insets the cut.
-    const inward = distance < 0;
-    const s = inward ? -1 : 1;
-    const nn1 = mul(n1, s);
-    const nn2 = mul(n2, s);
-    const mag = Math.abs(distance);
-    const join = normalize(add(nn1, nn2));
-    const denom = Math.max(0.2, Math.abs(dot(join, nn1)));
-    let miter = mag / denom;
-    if (miter > mag * 4) miter = mag * 4;
+    const join = normalize(add(n1, n2));
+    const used = join.x === 0 && join.y === 0 ? n1 : join;
+    const alignment = dot(used, n1);
+    const denom = Math.max(0.25, Math.abs(alignment));
+    let miter = distance / (alignment >= 0 ? denom : -denom);
+    if (Math.abs(miter) > Math.abs(distance) * 4) {
+      miter = Math.sign(miter) * Math.abs(distance) * 4;
+    }
     const turning = cross(e1, e2);
-    if (inward && turning < -0.15) {
-      out.push(add(curr, mul(nn1, mag)), add(curr, mul(nn2, mag)));
+    if (distance > 0 && turning < -0.2) {
+      out.push(add(curr, mul(n1, distance)), add(curr, mul(n2, distance)));
     } else {
-      out.push(add(curr, mul(join, miter)));
+      out.push(add(curr, mul(used, miter)));
     }
   }
   return cleanOffset(out, Math.abs(distance) * 0.15);
@@ -72,7 +74,7 @@ export function offsetPolyline(points: Ring, distance: number, closed: boolean):
   const out: Point[] = [];
   const count = pts.length;
   const last = closed ? count : count - 1;
-  for (let i = 0; i < (closed ? count : count); i++) {
+  for (let i = 0; i < count; i++) {
     const prev = pts[closed ? (i - 1 + count) % count : Math.max(0, i - 1)];
     const curr = pts[i];
     const next = pts[closed ? (i + 1) % count : Math.min(count - 1, i + 1)];
@@ -82,8 +84,13 @@ export function offsetPolyline(points: Ring, distance: number, closed: boolean):
     const n2 = normalize(perp(i === last && !closed ? incoming : outgoing));
     const join = normalize(add(n1, n2));
     const used = join.x === 0 && join.y === 0 ? n1 : join;
-    const denom = Math.max(0.25, Math.abs(dot(used, n1) || 1));
-    out.push(add(curr, mul(used, distance / denom)));
+    const alignment = dot(used, n1);
+    const denom = Math.max(0.25, Math.abs(alignment) || 1);
+    out.push(add(curr, mul(used, distance / (alignment >= 0 ? denom : -denom))));
   }
   return out;
+}
+
+export function largerRing(a: Ring, b: Ring): { outer: Ring; inner: Ring } {
+  return polygonArea(a) >= polygonArea(b) ? { outer: a, inner: b } : { outer: b, inner: a };
 }
