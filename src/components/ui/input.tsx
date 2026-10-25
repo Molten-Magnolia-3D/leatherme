@@ -9,6 +9,10 @@ export function Input({ className, ...props }: React.ComponentProps<"input">) {
         className,
       )}
       {...props}
+      onFocus={(event) => {
+        if (props.type === "number") event.currentTarget.select();
+        props.onFocus?.(event);
+      }}
     />
   );
 }
