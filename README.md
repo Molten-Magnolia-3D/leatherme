@@ -56,6 +56,16 @@ npm run dev
 
 The workbench starts on [http://localhost:4733](http://localhost:4733).
 
+## Releases and install
+
+Open [http://localhost:4733/releases](http://localhost:4733/releases) for the version history.
+
+- **Desktop:** install Leatherme from that page (or the browser install icon) so it opens as its own app.
+- **Phone:** add it to the home screen from the same page. iOS uses Safari Share → Add to Home Screen.
+- Each version also has a source zip download.
+
+Installed copies check for a new version and update themselves. Pushing to `main` runs tests, records the release, and publishes a GitHub Release so the history and downloads stay current.
+
 ## Test
 
 ```bash

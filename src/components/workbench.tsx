@@ -20,6 +20,7 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Preview2D } from "@/components/preview-2d";
 import { Preview3D } from "@/components/preview-3d";
+import { SiteChrome } from "@/components/site-chrome";
 import {
   DEFAULT_SETTINGS,
   PLATE_HEIGHT_MAX_MM,
@@ -115,13 +116,10 @@ export function Workbench() {
 
   return (
     <div className="flex min-h-dvh flex-col bg-background">
-      <header className="border-b border-border bg-[linear-gradient(180deg,#3b2416,#2a1a12)] text-[#f4efe6]">
-        <div className="mx-auto flex w-full max-w-[1400px] flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
-          <div>
-            <p className="text-[11px] uppercase tracking-[0.28em] text-[#d7b48a]">Leathercraft stencil maker</p>
-            <h1 className="font-display text-3xl leading-none sm:text-4xl">Leatherme</h1>
-          </div>
-          <div className="flex flex-wrap items-center gap-2">
+      <SiteChrome
+        current="workbench"
+        trailing={
+          <>
             <Tabs
               value={settings.unit}
               onValueChange={(value) => setSettings((s) => ({ ...s, unit: value as "mm" | "in" }))}
@@ -138,7 +136,11 @@ export function Workbench() {
             <Button variant="secondary" onClick={() => inputRef.current?.click()}>
               <Upload /> Upload
             </Button>
-            <Button variant="outline" className="border-[#d7b48a]/40 bg-transparent text-[#f4efe6] hover:bg-[#4a2f20]" onClick={onSample}>
+            <Button
+              variant="outline"
+              className="border-[#d7b48a]/40 bg-transparent text-[#f4efe6] hover:bg-[#4a2f20]"
+              onClick={onSample}
+            >
               <FolderOpen /> Card-sleeve sample
             </Button>
             <input
@@ -148,9 +150,9 @@ export function Workbench() {
               className="hidden"
               onChange={(event) => onFiles(event.target.files)}
             />
-          </div>
-        </div>
-      </header>
+          </>
+        }
+      />
 
       <main className="mx-auto grid w-full max-w-[1400px] flex-1 gap-4 p-4 sm:p-6 lg:grid-cols-[240px_minmax(0,1fr)_320px]">
         <Card className="order-2 lg:order-1">

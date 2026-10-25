@@ -1,0 +1,31 @@
+{
+  "name": "Leatherme",
+  "repository": "https://github.com/Molten-Magnolia-3D/leatherme",
+  "releasesUrl": "https://github.com/Molten-Magnolia-3D/leatherme/releases",
+  "current": "0.2.0",
+  "releases": [
+    {
+      "version": "0.2.0",
+      "date": "2026-10-25",
+      "title": "Releases, install, and auto-update",
+      "notes": [
+        "Added a Releases page with the full version history.",
+        "Install Leatherme on a computer or phone from that page.",
+        "Installed copies update themselves when a new version is pushed.",
+        "Pushing to main publishes a GitHub Release automatically."
+      ]
+    },
+    {
+      "version": "0.1.0",
+      "date": "2026-10-25",
+      "title": "First workbench",
+      "notes": [
+        "Turn closed leather outlines into 3D-printable stencil plates.",
+        "Import SVG, PDF, ASCII DXF, or a high-contrast image.",
+        "Ignore open fold lines and even inset stitch guides.",
+        "2D outline and 3D orbit previews, STL and 3MF export.",
+        "Built-in card-sleeve sample at public/samples/card-sleeve.svg."
+      ]
+    }
+  ]
+}

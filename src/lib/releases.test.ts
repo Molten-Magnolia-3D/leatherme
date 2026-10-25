@@ -1,0 +1,34 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { describe, expect, it } from "vitest";
+import catalog from "@/lib/releases.json";
+import {
+  APP_VERSION,
+  RELEASES,
+  githubReleaseUrl,
+  githubSourceZipUrl,
+  latestRelease,
+  releaseTag,
+} from "@/lib/releases";
+
+describe("release catalog", () => {
+  it("matches the package version", () => {
+    const pkg = JSON.parse(readFileSync(path.resolve(process.cwd(), "package.json"), "utf8")) as {
+      version: string;
+    };
+    expect(APP_VERSION).toBe(pkg.version);
+    expect(catalog.current).toBe(pkg.version);
+  });
+
+  it("lists newest first and includes the current version", () => {
+    expect(RELEASES.length).toBeGreaterThan(0);
+    expect(latestRelease().version).toBe(APP_VERSION);
+    expect(RELEASES.map((release) => release.version)).toContain("0.1.0");
+  });
+
+  it("builds GitHub download URLs", () => {
+    expect(releaseTag("0.2.0")).toBe("v0.2.0");
+    expect(githubReleaseUrl("0.2.0")).toMatch(/\/releases\/tag\/v0.2.0$/);
+    expect(githubSourceZipUrl("0.2.0")).toMatch(/\/archive\/refs\/tags\/v0.2.0\.zip$/);
+  });
+});
