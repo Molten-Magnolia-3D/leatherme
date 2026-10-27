@@ -1,0 +1,108 @@
+{
+  "name": "leatherme",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Leathercraft stencil maker",
+  "author": "Molten Magnolia 3D",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Molten-Magnolia-3D/leatherme.git"
+  },
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "next dev --port 4733",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "app": "electron .",
+    "dist": "npm run build && node scripts/prepare-standalone.mjs && electron-builder --publish never"
+  },
+  "dependencies": {
+    "@radix-ui/react-label": "^2.1.17",
+    "@radix-ui/react-scroll-area": "^1.4.0",
+    "@radix-ui/react-select": "^2.4.1",
+    "@radix-ui/react-separator": "^1.2.0",
+    "@radix-ui/react-slider": "^1.6.1",
+    "@radix-ui/react-slot": "^1.5.0",
+    "@radix-ui/react-switch": "^1.4.1",
+    "@radix-ui/react-tabs": "^1.2.1",
+    "@radix-ui/react-toggle": "^1.2.1",
+    "@radix-ui/react-toggle-group": "^1.2.1",
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.8.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "earcut": "^3.2.4",
+    "electron-updater": "^6.6.2",
+    "jszip": "^3.10.2",
+    "lucide-react": "^1.61.0",
+    "next": "16.4.3",
+    "pako": "^3.0.2",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "tailwind-merge": "^3.7.0",
+    "three": "^0.186.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/turbopack": "^4",
+    "@types/earcut": "^3.0.0",
+    "@types/node": "^20",
+    "@types/pako": "^2.0.4",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/three": "^0.186.0",
+    "electron": "^37.2.6",
+    "electron-builder": "^26.0.12",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.3",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vitest": "^3.2.4"
+  },
+  "build": {
+    "appId": "com.moltenmagnolia.leatherme",
+    "productName": "Leatherme",
+    "artifactName": "Leatherme-${version}-${os}.${ext}",
+    "files": [
+      "electron/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": ".next/standalone",
+        "to": "standalone"
+      }
+    ],
+    "directories": {
+      "output": "dist-app"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.graphics-design"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Graphics"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "Molten-Magnolia-3D",
+      "repo": "leatherme"
+    }
+  }
+}
