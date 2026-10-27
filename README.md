@@ -56,15 +56,21 @@ npm run dev
 
 The workbench starts on [http://localhost:4733](http://localhost:4733).
 
-## Releases and install
+## Download the app
 
-Open [http://localhost:4733/releases](http://localhost:4733/releases) for the version history.
+Get the desktop app from [GitHub Releases](https://github.com/Molten-Magnolia-3D/leatherme/releases):
 
-- **Desktop:** install Leatherme from that page (or the browser install icon) so it opens as its own app.
-- **Phone:** add it to the home screen from the same page. iOS uses Safari Share → Add to Home Screen.
-- Each version also has a source zip download.
+- Windows: `Leatherme-*-win.exe`
+- macOS: `Leatherme-*-mac.dmg`
+- Linux: `Leatherme-*-linux.AppImage`
 
-Installed copies check for a new version and update themselves. Pushing to `main` runs tests, records the release, and publishes a GitHub Release so the history and downloads stay current.
+The in-app [Releases](/releases) page lists the same GitHub downloads. Pushing to `main` publishes a new GitHub Release and uploads those builds. An installed copy updates itself from GitHub.
+
+To package locally:
+
+```bash
+npm run dist
+```
 
 ## Test
 

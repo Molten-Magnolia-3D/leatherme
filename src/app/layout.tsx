@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Source_Sans_3 } from "next/font/google";
-import { UpdateManager } from "@/components/update-manager";
 import { APP_NAME } from "@/lib/releases";
 import "./globals.css";
 
@@ -19,11 +18,6 @@ export const metadata: Metadata = {
   applicationName: APP_NAME,
   description:
     "Turn a leather pattern into 3D-printable stencil plates. The outside wall is the cut line.",
-  appleWebApp: {
-    capable: true,
-    title: APP_NAME,
-    statusBarStyle: "black-translucent",
-  },
 };
 
 export const viewport: Viewport = {
@@ -36,10 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${sourceSans.variable} ${fraunces.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        {children}
-        <UpdateManager />
-      </body>
+      <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
 }

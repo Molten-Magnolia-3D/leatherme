@@ -5,9 +5,10 @@ import catalog from "@/lib/releases.json";
 import {
   APP_VERSION,
   RELEASES,
+  appDownloadsFromAssets,
   githubReleaseUrl,
-  githubSourceZipUrl,
   latestRelease,
+  platformForAsset,
   releaseTag,
 } from "@/lib/releases";
 
@@ -26,9 +27,21 @@ describe("release catalog", () => {
     expect(RELEASES.map((release) => release.version)).toContain("0.1.0");
   });
 
-  it("builds GitHub download URLs", () => {
-    expect(releaseTag("0.2.0")).toBe("v0.2.0");
-    expect(githubReleaseUrl("0.2.0")).toMatch(/\/releases\/tag\/v0.2.0$/);
-    expect(githubSourceZipUrl("0.2.0")).toMatch(/\/archive\/refs\/tags\/v0.2.0\.zip$/);
+  it("builds GitHub release URLs", () => {
+    expect(releaseTag("0.3.0")).toBe("v0.3.0");
+    expect(githubReleaseUrl("0.3.0")).toMatch(/\/releases\/tag\/v0.3.0$/);
+  });
+
+  it("maps GitHub assets to desktop app downloads", () => {
+    expect(platformForAsset("Leatherme Setup 0.3.0.exe")).toBe("windows");
+    expect(platformForAsset("Leatherme-0.3.0.dmg")).toBe("mac");
+    expect(platformForAsset("Leatherme-0.3.0.AppImage")).toBe("linux");
+    expect(platformForAsset("latest.yml")).toBeNull();
+    const downloads = appDownloadsFromAssets([
+      { name: "Leatherme-0.3.0.AppImage", browser_download_url: "https://example.com/app.AppImage", size: 1 },
+      { name: "Leatherme Setup 0.3.0.exe", browser_download_url: "https://example.com/app.exe", size: 1 },
+      { name: "latest.yml", browser_download_url: "https://example.com/latest.yml", size: 1 },
+    ]);
+    expect(downloads.map((item) => item.platform)).toEqual(["windows", "linux"]);
   });
 });

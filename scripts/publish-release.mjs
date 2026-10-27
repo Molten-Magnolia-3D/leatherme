@@ -1,5 +1,5 @@
 import { execSync } from "node:child_process";
-import { readFileSync, writeFileSync } from "node:fs";
+import { appendFileSync, readFileSync, writeFileSync } from "node:fs";
 
 const pkgPath = "package.json";
 const catalogPath = "src/lib/releases.json";
@@ -66,8 +66,12 @@ const body = [
   "",
   ...(entry?.notes ?? notes).map((note) => `- ${note}`),
   "",
-  "Install from the Releases page in the app, or download the source zip attached to this GitHub release.",
-  "Installed copies update themselves after this release is on the deployed site.",
+  "Download the desktop app from this GitHub release:",
+  "- Windows: `Leatherme Setup *.exe`",
+  "- macOS: `Leatherme-*.dmg`",
+  "- Linux: `Leatherme-*.AppImage`",
+  "",
+  "Installed copies check this GitHub release and update themselves.",
 ].join("\n");
 
 if (!tagExists(tag)) {
@@ -80,6 +84,10 @@ try {
   sh(`gh release edit ${tag} --title "Leatherme ${tag}" --notes ${JSON.stringify(body)} --latest`);
 } catch {
   sh(`gh release create ${tag} --title "Leatherme ${tag}" --notes ${JSON.stringify(body)} --latest`);
+}
+
+if (process.env.GITHUB_OUTPUT) {
+  appendFileSync(process.env.GITHUB_OUTPUT, `tag=${tag}\n`);
 }
 
 console.log(`Published ${tag}`);

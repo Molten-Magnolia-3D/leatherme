@@ -2,17 +2,25 @@
   "name": "Leatherme",
   "repository": "https://github.com/Molten-Magnolia-3D/leatherme",
   "releasesUrl": "https://github.com/Molten-Magnolia-3D/leatherme/releases",
-  "current": "0.2.0",
+  "current": "0.3.0",
   "releases": [
+    {
+      "version": "0.3.0",
+      "date": "2026-10-26",
+      "title": "Desktop app on GitHub",
+      "notes": [
+        "Leatherme is a desktop app you download from GitHub Releases.",
+        "Windows (.exe), macOS (.dmg), and Linux (.AppImage) builds are attached to each release.",
+        "Pushing to main publishes a new GitHub Release and uploads the apps.",
+        "Installed copies update themselves from GitHub."
+      ]
+    },
     {
       "version": "0.2.0",
       "date": "2026-10-25",
-      "title": "Releases, install, and auto-update",
+      "title": "Releases page",
       "notes": [
-        "Added a Releases page with the full version history.",
-        "Install Leatherme on a computer or phone from that page.",
-        "Installed copies update themselves when a new version is pushed.",
-        "Pushing to main publishes a GitHub Release automatically."
+        "Added a Releases page with the full version history."
       ]
     },
     {
